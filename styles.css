@@ -1,0 +1,56 @@
+/* (c) "율[燏] ; ceramic yul" all rights reserved. */
+
+@font-face {
+    font-family: 'Gaegu';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Gaegu Regular'), local('Gaegu-Regular'),
+        url('fonts/Gaegu/Gaegu-Regular.woff2') format('woff2'),
+}
+
+@font-face {
+    font-family: 'NotoColorEmoji';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('NotoColorEmoji, Regular'), local('NotoColorEmoji Regular'), local('NotoColorEmoji-Regular') url('fonts/NotoColorEmoji/NotoColorEmoji-Regular.woff2') format('woff2')
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #fff9eb;
+    font-family: 'Gaegu', 'NotoColorEmoji', sans-serif;
+    font-size: 1.45rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+}
+
+#background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('imgs/main/background_color.webp');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: -2;
+}
+
+#title {
+    display: flex;
+    margin-top: 20px;
+    font-size: 2rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+}
