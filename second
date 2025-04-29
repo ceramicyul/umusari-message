@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>감정 위로 시스템</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #fff9eb;
+      text-align: center;
+      padding: 50px;
+    }
+    input, select, button {
+      font-size: 1.2rem;
+      margin: 10px;
+      padding: 8px 12px;
+    }
+    #message {
+      margin-top: 30px;
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>감정 위로 시스템</h1>
+
+  <div>
+    <input type="text" id="nameInput" placeholder="당신의 이름을 입력하세요">
+  </div>
+
+  <div>
+    <select id="emotionSelect">
+      <option value="">감정 모드를 선택하세요</option>
+      <option value="행복">행복</option>
+      <option value="슬픔">슬픔</option>
+      <option value="화남">화남</option>
+      <option value="불안">불안</option>
+      <option value="편안">편안</option>
+    </select>
+  </div>
+
+  <div>
+    <button onclick="showMessage()">위로 받기</button>
+  </div>
+
+  <div id="message"></div>
+
+  <script>
+    const messages = {
+      "행복": ["정말 빛나는 하루야, {name}님!", "행복은 퍼져나가요, {name}님."],
+      "슬픔": ["괜찮아, {name}님. 오늘은 천천히.", "울어도 괜찮아, {name}님."],
+      "화남": ["화나는 감정도 소중해요, {name}님.", "숨 한번 크게 쉬어봐요, {name}님."],
+      "불안": ["모든 걱정이 지나갈 거예요, {name}님.", "조금씩, 천천히 나아가요, {name}님."],
+      "편안": ["지금 이 순간을 누려요, {name}님.", "평온이 {name}님과 함께해요."]
+    };
+
+    function showMessage() {
+      const name = document.getElementById('nameInput').value.trim();
+      const emotion = document.getElementById('emotionSelect').value;
+      const messageBox = document.getElementById('message');
+
+      if (!name) {
+        alert('이름을 입력해주세요.');
+        return;
+      }
+      if (!emotion) {
+        alert('감정 모드를 선택해주세요.');
+        return;
+      }
+
+      const selectedMessages = messages[emotion];
+      const randomIndex = Math.floor(Math.random() * selectedMessages.length);
+      const rawMessage = selectedMessages[randomIndex];
+      const finalMessage = rawMessage.replace('{name}', name);
+
+      messageBox.innerText = finalMessage;
+    }
+  </script>
+
+</body>
+</html>
