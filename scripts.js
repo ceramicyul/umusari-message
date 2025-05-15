@@ -1,3 +1,15 @@
+navigator.geolocation.getCurrentPosition((position) => {
+  const lat = position.coords.latitude;
+  const lon = position.coords.longitude;
+
+  // 위도·경도 → 지역명 추출하는 API 호출
+  fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=API_KEY`)
+    .then(response => response.json())
+    .then(data => {
+      const region = extractRegion(data); // 'Yeongdeok' 같은 이름 추출
+      displayUmuMessage(region);
+    });
+});
 const messages = {
     tired: ["오늘도 여기까지 온 너,\n정말 멋져우무! 😌", "숨 고르기 타임!\n우무가 옆에서 같이 쉴게요. 🌊"],
     sad: ["감정은 숨기지 않아도 돼...\n말 없이 곁을 지켜줄게. 🌊", "오늘도 많이 애썼구나...\n살며시 꼬옥 안아줄게. 🐚"],
