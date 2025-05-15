@@ -1,87 +1,80 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <link rel="preload" href="fonts/Gaegu/Gaegu-Regular.woff2" as="font"
-      type="font/woff2" crossorigin>
-    <link rel="preload" href="fonts/NotoColorEmoji/NotoColorEmoji-Regular.woff2"
-      as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="imgs/background_color.webp" as="image">
-    <script src="scripts/github-pages-local-storage.js"></script>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>우무사리가 전하는 말</title>
-    <link rel="stylesheet" href="styles.css">
-  </head>
-
-  <body>
-    <div id="background"></div>
-    <img id="randomUmuImage" src alt="랜덤 우무 이미지" />
-    <div id="title">우무사리가 전하는 말</div>
-
-    <button id="aboutBtn">About 우무사리</button>
-
-    <div id="subtitle"></div>
-    <div class="mode-buttons">
-      <button onclick="setMode('emotion')">감정 모드</button>
-      <button onclick="setMode('random')">랜덤 모드</button>
-      <button id="galleryModeBtn" onclick="setMode('gallery')">갤러리</button>
-    </div>
-    <button id="galleryBtn" onclick="setMode('gallery')">갤러리</button>
-
-    <div class="emotion-buttons" style="display: none;">
-      <button id="tiredBtn" onclick="showMessage('tired')">
-        <img src="imgs/emotion_tired.webp" alt="피곤해 아이콘" class="emotion-icon">
-        피곤해
-      </button>
-      <button id="sadBtn" onclick="showMessage('sad')">
-        <img src="imgs/emotion_sad.webp" alt="속상해 아이콘" class="emotion-icon">
-        속상해
-      </button>
-      <button id="angryBtn" onclick="showMessage('angry')">
-        <img src="imgs/emotion_angry.webp" alt="화났어 아이콘" class="emotion-icon">
-        화났어
-      </button>
-      <button id="lonelyBtn" onclick="showMessage('lonely')">
-        <img src="imgs/emotion_lonely.webp" alt="외로워 아이콘" class="emotion-icon">
-        외로워
-      </button>
-      <button id="mehBtn" onclick="showMessage('meh')">
-        <img src="imgs/emotion_soso.webp" alt="그냥 그래 아이콘" class="emotion-icon">
-        그냥 그래
-      </button>
-    </div>
-
-    <div id="hidden-label">✨ Hidden! ✨</div>
-    <div id="messageBox"></div>
-    <div id="btnContainer">
-      <button id="resetBtn" onclick="reset()">첫 화면으로</button>
-      <button id="saveImageBtn" onclick="saveImage()">저장하기</button>
-      <button id="selectAgainBtn" onclick="selectAgain()"
-        style="display: none;">다시 선택하기</button>
-    </div>
-
-    <div id="welcome-overlay">
-      <div class="welcome-content">
-        <div class="speech-bubble">
-          <p>안녕! 내이름은 우무사리!<br>오늘은 어땠어? 나한테 말해봐</p>
-        </div>
-        <img
-          src="imgs/heart_anim.webp"
-          alt="우무 하트 애니메이션"
-          class="umu-illustration" />
-      </div>
-    </div>
-
-    <div id="aboutModal">
-      <div id="aboutModalBg">
-        <h2>우무사리란?</h2>
-        <p>우무문어를 모티브로<br>항상 머리에 불가사리를 붙이고 다녀<br>'우무사리'라는 이름을 갖게 됐죠.<br />
-          우무사리는 사람들의 기분을<br />조용히 들어주고,<br />
-          말없이 위로를 건네는 감정 친구랍니다.</p>
-        <button id="closeModal">닫기</button>
-      </div>
-    </div>
-
-    <script src="scripts.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>우무사리가 전하는 말</title>
+  <link href="https://fonts.googleapis.com/css2?family=Gaegu&display=swap" rel="stylesheet" />
+  <script defer src="messages/locationData.js"></script>
+  <script defer src="scripts/location-based.js"></script>
+  <style>
+    body {
+      font-family: 'Gaegu', sans-serif;
+      text-align: center;
+      background-color: #fff9eb;
+      padding: 2rem;
+    }
+    #message {
+      margin-top: 2rem;
+      font-size: 1.8rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>우무사리가 전하는 말</h1>
+  <div id="message">위치를 확인 중이에요...</div>
+</body>
 </html>
+
+const locationMessages = [
+  {
+    region: "경상북도 울진군",
+    message: "울진의 파도처럼 잔잔한 하루가 되길 바라요 🌊"
+  },
+  {
+    region: "서울특별시",
+    message: "복잡한 도시 속에서도 당신의 마음엔 여유가 필요해요 🏙️"
+  },
+  {
+    region: "부산광역시",
+    message: "부산처럼 뜨거운 열정, 오늘도 충분해요 🔥"
+  },
+  {
+    region: "제주특별자치도",
+    message: "제주의 바람처럼 기분 좋은 하루가 되길! 🍊"
+  },
+  {
+    region: "default",
+    message: "지금 있는 그곳에서도 우무사리는 당신을 응원해요 💕"
+  }
+];
+
+window.onload = function () {
+  const messageEl = document.getElementById("message");
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(async function (position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
+        );
+        const data = await response.json();
+        const region = data.address.state || data.address.city || "default";
+
+        const match = locationMessages.find(loc => region.includes(loc.region)) || locationMessages.find(loc => loc.region === "default");
+
+        messageEl.innerText = match.message;
+
+      } catch (error) {
+        messageEl.innerText = "위치 정보를 불러올 수 없어요. 다시 시도해 주세요.";
+      }
+    }, function () {
+      messageEl.innerText = "위치 접근이 거부되었어요.";
+    });
+  } else {
+    messageEl.innerText = "이 기기에서는 위치 정보를 사용할 수 없어요.";
+  }
+};
